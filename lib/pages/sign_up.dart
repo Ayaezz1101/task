@@ -15,6 +15,7 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  final _signUpKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final phoneController = TextEditingController();
   final passwordController = TextEditingController();
@@ -34,96 +35,107 @@ class _SignUpState extends State<SignUp> {
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: getRelativeWidth(25)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 10),
-
-              AppCircleButton(
-                onTap: () => Navigator.pop(context),
-                icon: Icons.arrow_back_ios_new,
-              ),
-
-              const SizedBox(height: 24),
-
-              Text(
-                "Let's, Create\nAccount",
-                style: AppTextStyles.title.copyWith(height: 1.1),
-              ),
-
-              const SizedBox(height: 56),
-
-              AppTextField(
-                controller: emailController,
-                hint: "Enter your email",
-                icon: Icons.email_outlined,
-              ),
-              const SizedBox(height: 16),
-
-              AppTextField(
-                controller: phoneController,
-                hint: "Enter your number",
-                icon: Icons.phone_android,
-              ),
-              const SizedBox(height: 16),
-
-              AppPasswordField(
-                controller: passwordController,
-                hint: "Enter your password",
-                obscure: obscure1,
-                onTap: () => setState(() => obscure1 = !obscure1),
-              ),
-              const SizedBox(height: 16),
-
-              AppPasswordField(
-                controller: confirmController,
-                hint: "Confirm your password",
-                obscure: obscure2,
-                onTap: () => setState(() => obscure2 = !obscure2),
-              ),
-
-              SizedBox(height: screenHeight * 0.1),
-
-              AppPrimaryButton(
-                text: "Create Account",
-                onPressed: () {
-                 
-                },
-              ),
-              const SizedBox(height: 10),
-
-              const Center(
-                child: Text("Or Continue with", style: AppTextStyles.body),
-              ),
-
-              const SizedBox(height: 16),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    "Already have an account? ",
-                    style: AppTextStyles.body,
+          child: Form(key: _signUpKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 10),
+            
+                AppCircleButton(
+                  onTap: () => Navigator.pop(context),
+                  icon: Icons.arrow_back_ios_new,
+                ),
+            
+                const SizedBox(height: 24),
+            
+                Text(
+                  "Let's, Create\nAccount",
+                  style: AppTextStyles.title.copyWith(height: 1.1),
+                ),
+            
+                const SizedBox(height: 56),
+            
+                AppTextField(
+                    controller: emailController,
+                    hint: "Enter your email",
+                    icon: Icons.email_outlined,
+                    validator: (value) => (value == null || !value.contains('@')) ? "Invalid email" : null,
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        SpringPageRoute(page: const SignIn()),
-                      );
+                const SizedBox(height: 16),
+            
+                AppTextField(
+                    controller: phoneController,
+                    hint: "Enter your number",
+                    icon: Icons.phone_android,
+                    validator: (value) => (value == null || value.length < 10) ? "Invalid number" : null,
+                  ),
+                const SizedBox(height: 16),
+            
+                AppPasswordField(
+                    controller: passwordController,
+                    hint: "Enter your password",
+                    obscure: obscure1,
+                    validator: (value) => (value == null || value.length < 6) ? "Too short" : null,
+                    onTap: () => setState(() => obscure1 = !obscure1),
+                  ),
+                const SizedBox(height: 16),
+            
+                AppPasswordField(
+                    controller: confirmController,
+                    hint: "Confirm your password",
+                    obscure: obscure2,
+                    validator: (value) {
+                      if (value != passwordController.text) return "Passwords don't match";
+                      return null;
                     },
-                    child: Text(
-                      "Sign-In",
-                      style: AppTextStyles.body.copyWith(
-                        color: Theme.of(context).colorScheme.primary,
-                        fontWeight: FontWeight.w500,
+                    onTap: () => setState(() => obscure2 = !obscure2),
+                  ),
+            
+                SizedBox(height: screenHeight * 0.1),
+            
+                AppPrimaryButton(
+                  text: "Create Account",
+                  onPressed: () {if (_signUpKey.currentState!.validate()) {
+                        print("Account Creating...");
+                      }
+                   
+                  },
+                ),
+                const SizedBox(height: 10),
+            
+                const Center(
+                  child: Text("Or Continue with", style: AppTextStyles.body),
+                ),
+            
+                const SizedBox(height: 16),
+            
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Already have an account? ",
+                      style: AppTextStyles.body,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          SpringPageRoute(page: const SignIn()),
+                        );
+                      },
+                      child: Text(
+                        "Sign-In",
+                        style: AppTextStyles.body.copyWith(
+                          color: Theme.of(context).colorScheme.primary,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-            ],
+                  ],
+                ),
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
         ),
       ),

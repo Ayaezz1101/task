@@ -57,6 +57,12 @@ class _SignInState extends State<SignIn> {
                   controller: emailController,
                   hint: "Enter your email",
                   icon: Icons.email_outlined,
+                  validator: (value) {
+                    if (value == null || value.isEmpty)
+                      return "Email is required";
+                    if (!value.contains('@')) return "Enter a valid email";
+                    return null;
+                  },
                 ),
 
                 const SizedBox(height: 16),
@@ -65,11 +71,12 @@ class _SignInState extends State<SignIn> {
                   controller: passwordController,
                   hint: "Enter your password",
                   obscure: obscure,
-                  onTap: () {
-                    setState(() {
-                      obscure = !obscure;
-                    });
+                  validator: (value) {
+                    if (value == null || value.length < 6)
+                      return "Min 6 characters";
+                    return null;
                   },
+                  onTap: () => setState(() => obscure = !obscure),
                 ),
 
                 Align(
@@ -88,7 +95,15 @@ class _SignInState extends State<SignIn> {
 
                 SizedBox(height: screenHeight * 0.15),
 
-                AppPrimaryButton(text: "Login", height: 48, onPressed: () {}),
+                AppPrimaryButton(
+                  text: "Login",
+                  height: 48,
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      print("Logging in...");
+                    }
+                  },
+                ),
 
                 const SizedBox(height: 16),
 
