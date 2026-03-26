@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:task1/pages/home.dart';
 import 'package:task1/routing/spring_route.dart';
+import 'package:task1/services/auth_service.dart';
 import 'package:task1/widgets/app_button.dart';
 import 'package:task1/widgets/app_circle.dart';
 import 'sign_up.dart';
@@ -18,6 +20,7 @@ class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final AuthService _auth = AuthService();
   bool obscure = true;
 
   @override
@@ -98,9 +101,24 @@ class _SignInState extends State<SignIn> {
                 AppPrimaryButton(
                   text: "Login",
                   height: 48,
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      print("Logging in...");
+                      
+                      try {
+                        await _auth.signIn(
+                          email: emailController.text.trim(),
+                          password: passwordController.text.trim(),
+                        );
+
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (_) => HomePage()),
+                        );
+                      } catch (e) {
+                        ScaffoldMessenger.of(
+                          context,
+                        ).showSnackBar(SnackBar(content: Text(e.toString())));
+                      }
                     }
                   },
                 ),
@@ -112,17 +130,47 @@ class _SignInState extends State<SignIn> {
                 ),
 
                 const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _socialIconAsset('assets/images/Social Icons (1).png'),
-                    const SizedBox(width: 16),
-                    _socialIconAsset('assets/images/Social Icons (2).png'),
-                    const SizedBox(width: 16),
-                    _socialIconAsset('assets/images/Social Icons.png'),
-                  ],
-                ),
+               Row(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
 
+    // GOOGLE
+    _socialIconAsset(
+      'assets/images/Social Icons (1).png',
+      () async {
+        try {
+          await _auth.signInWithGoogle();
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => HomePage()),
+          );
+
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(e.toString())),
+          );
+        }
+      },
+    ),
+
+    const SizedBox(width: 16),
+
+    // FACEBOOK (لاحقاً)
+    _socialIconAsset(
+      'assets/images/Social Icons (2).png',
+      () {},
+    ),
+
+    const SizedBox(width: 16),
+
+    // APPLE (لاحقاً)
+    _socialIconAsset(
+      'assets/images/Social Icons.png',
+      () {},
+    ),
+  ],
+),
                 const SizedBox(height: 24),
 
                 Row(
@@ -158,8 +206,10 @@ class _SignInState extends State<SignIn> {
     );
   }
 
-  Widget _socialIconAsset(String assetPath) {
-    return Container(
+ Widget _socialIconAsset(String assetPath, VoidCallback onTap) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
       padding: const EdgeInsets.all(10),
       width: 44,
       height: 44,
@@ -168,6 +218,7 @@ class _SignInState extends State<SignIn> {
         border: Border.all(color: AppColors.border),
       ),
       child: Image.asset(assetPath, fit: BoxFit.contain),
-    );
-  }
+    ),
+  );
+}
 }
