@@ -36,32 +36,31 @@ A professional Flutter implementation featuring a secure authentication flow (On
 
 ---
 
-## 🚀 How to Run
+## Installation
 
-1. **Clone the repository:**
-```bash
-git clone https://github.com/Ayaezz1101/task.git
-Firebase Setup:
+Follow these steps to run the project locally:
 
-Add your google-services.json (Android) to android/app/ folder.
+1.  **Clone the repository**:
+    ```bash
+    git clone https://github.com/Ayaezz1101/task.git
+    ```
+2.  **Firebase Setup**:
+    * Add your `google-services.json` to `android/app/`
+    * Add your `GoogleService-Info.plist` to `ios/Runner/`
+3.  **Install dependencies**:
+    ```bash
+    flutter pub get
+    ```
+4.  **Run the app**:
+    ```bash
+    flutter run
+    ```
 
-Add your GoogleService-Info.plist (iOS) to ios/Runner/ folder.
-
-Install dependencies:
-
-```bash
-flutter pub get
-Run the app:
-
-```bash
-flutter run
-
-## Project Structure (Clean Code)
-
+## Project Structure
 ```text
 lib/
-├── pages/        # Authentication screens (SignIn, SignUp, Onboarding)
-├── widgets/      # Reusable UI components (Buttons, Input Fields)
-├── services/     # Firebase Authentication & Google Sign-In logic (AuthService)
-├── theme/        # Centralized styles and color palettes
-└── routing/      # Custom navigation and animation logic
+├── pages/         # Authentication screens (SignIn, SignUp, Onboarding)
+├── widgets/       # Reusable UI components (AppPrimaryButton, AppTextField)
+├── services/      # Firebase Logic (AuthService.dart)
+├── theme/         # Centralized styles and AppTheme constants
+└── routing/       # Custom physics transitions (SpringPageRoute)
