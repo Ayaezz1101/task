@@ -103,7 +103,6 @@ class _SignInState extends State<SignIn> {
                   height: 48,
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      
                       try {
                         await _auth.signIn(
                           email: emailController.text.trim(),
@@ -130,47 +129,39 @@ class _SignInState extends State<SignIn> {
                 ),
 
                 const SizedBox(height: 16),
-               Row(
-  mainAxisAlignment: MainAxisAlignment.center,
-  children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _socialIconAsset(
+                      'assets/images/Social Icons (1).png',
+                      () async {
+                        try {
+                          await _auth.signInWithGoogle();
 
-    // GOOGLE
-    _socialIconAsset(
-      'assets/images/Social Icons (1).png',
-      () async {
-        try {
-          await _auth.signInWithGoogle();
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (_) => HomePage()),
+                          );
+                        } catch (e) {
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text(e.toString())));
+                        }
+                      },
+                    ),
 
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (_) => HomePage()),
-          );
+                    const SizedBox(width: 16),
 
-        } catch (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(e.toString())),
-          );
-        }
-      },
-    ),
+                    _socialIconAsset(
+                      'assets/images/Social Icons (2).png',
+                      () {},
+                    ),
 
-    const SizedBox(width: 16),
+                    const SizedBox(width: 16),
 
-    // FACEBOOK (لاحقاً)
-    _socialIconAsset(
-      'assets/images/Social Icons (2).png',
-      () {},
-    ),
-
-    const SizedBox(width: 16),
-
-    // APPLE (لاحقاً)
-    _socialIconAsset(
-      'assets/images/Social Icons.png',
-      () {},
-    ),
-  ],
-),
+                    _socialIconAsset('assets/images/Social Icons.png', () {}),
+                  ],
+                ),
                 const SizedBox(height: 24),
 
                 Row(
@@ -206,19 +197,19 @@ class _SignInState extends State<SignIn> {
     );
   }
 
- Widget _socialIconAsset(String assetPath, VoidCallback onTap) {
-  return GestureDetector(
-    onTap: onTap,
-    child: Container(
-      padding: const EdgeInsets.all(10),
-      width: 44,
-      height: 44,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(color: AppColors.border),
+  Widget _socialIconAsset(String assetPath, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        width: 44,
+        height: 44,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(color: AppColors.border),
+        ),
+        child: Image.asset(assetPath, fit: BoxFit.contain),
       ),
-      child: Image.asset(assetPath, fit: BoxFit.contain),
-    ),
-  );
-}
+    );
+  }
 }
