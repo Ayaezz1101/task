@@ -6,13 +6,15 @@ A professional Flutter implementation featuring a secure authentication flow (On
 
 ## Key Features
 
- **Firebase Authentication:** Integrated with Firebase to handle real-time user registration and secure login.* **Robust Form Validation:** Implemented custom validation logic for:
-     **Email:** Regex-based format checking.
-     **Password:** Minimum length and "Confirm Password" matching logic.
-     **Phone Number:** Length and digit verification.
- **Custom Spring Routing:** Physics-based transitions (`SpringPageRoute`) using `dart:physics` for a premium feel (Mass: 1, Stiffness: 45, Damping: 15).
- **Reusable Component Architecture:** Modular UI using custom-built widgets (`AppPrimaryButton`, `AppTextField`, `AppPasswordField`) for maximum maintainability.
- **Responsive UI:** Dynamic scaling using `MediaQuery` to ensure consistency across all device sizes.
+* **Firebase Authentication:** Integrated with Firebase to handle real-time user registration and secure login.
+* **Google Social Login:** Support for Google Sign-In using OAuth2.
+* **Auth Service Provider:** Abstracted backend logic into a dedicated `AuthService` class for better maintainability.
+* **Robust Form Validation:** Implemented custom validation logic for:
+    * **Email:** Regex-based format checking.
+    * **Password:** Minimum length and "Confirm Password" matching logic.
+    * **Phone Number:** Length and digit verification.
+* **Custom Spring Routing:** Physics-based transitions (`SpringPageRoute`) using `dart:physics` for a premium feel (Mass: 1, Stiffness: 45, Damping: 15).
+* **Reusable Component Architecture:** Modular UI using custom-built widgets (`AppPrimaryButton`, `AppTextField`, `AppPasswordField`).
 
 ---
 
@@ -34,22 +36,24 @@ A professional Flutter implementation featuring a secure authentication flow (On
 
 ---
 
-## How to Run
-Clone the repository:
+## 🚀 How to Run
 
-Bash
-git clone [https://github.com/Ayaezz1101/task.git](https://github.com/Ayaezz1101/task.git)
+1. **Clone the repository:**
+```bash
+git clone https://github.com/Ayaezz1101/task.git
 Firebase Setup:
 
-Add your google-services.json (Android) or GoogleService-Info.plist (iOS) to the respective folders.
+Add your google-services.json (Android) to android/app/ folder.
+
+Add your GoogleService-Info.plist (iOS) to ios/Runner/ folder.
 
 Install dependencies:
 
-Bash
+```bash
 flutter pub get
 Run the app:
 
-Bash
+```bash
 flutter run
 
 ## Project Structure (Clean Code)
